@@ -6,15 +6,15 @@ import QtQuick.Window 2.2
 
 Window {
     id: win
-    width: 1400
-    height: 600
+    width: 1800
+    height: 900
     title: "Drag & drop example"
     visible: true
 
     Rectangle {
         id: main
-        width: 1400
-        height: 600
+        width: 1800
+        height: 900
         color: "white"
         //Drag.active: mouseArea.drag.active
 
@@ -40,25 +40,31 @@ Window {
     property var totalBeadList: ["bead1", "bead2", "bead3", "bead4", "bead5", "bead6", "bead7", "bead8", "bead9", "bead10"]
     property var totalBeadList2: ["bead1", "bead2", "bead3", "bead4", "bead5", "bead6", "bead7", "bead8", "bead9", "bead10"]
     property var totalBeadList3: ["bead1", "bead2", "bead3", "bead4", "bead5", "bead6", "bead7", "bead8", "bead9", "bead10"]
-    property int beadWidth:60
-    property int beadHeight:60
-    property int borderWidth:1100
-    property int borderHeight:450
-    property int bordermin: 36
+    property int beadWidth:90
+    property int beadHeight:90
+    property int borderWidth:1500
+    property int borderHeight:700
+    property int bordermin: 50
     property int tolstatic:3
     property int toldynamic:1
     property int toladjusted:3
     property int row1counter: 0
     property int row2counter: 0
     property int row3counter: 0
+    property int box: 150
+    property int widthmin: 200
+    property int heightmin: 200
+    property int distance:180
+    property int constfix: 36
+    property int constmax: 23
 
 
 
     Rectangle {
-        width: 100
-        height: 100
-        y: 125 + 0*150 - width/2
-        x: 1100 + width/2
+        width: box
+        height: box
+        y: widthmin + 0*distance - width/2
+        x: borderWidth + width/2
         border.width : 5
         border.color : "lightgrey"
         Text {
@@ -72,10 +78,10 @@ Window {
     }
 
     Rectangle {
-        width: 100
-        height: 100
-        y: 125 + 1*150 - width/2
-        x: 1100 + width/2
+        width: box
+        height: box
+        y: widthmin + 1*distance - width/2
+        x: borderWidth + width/2
         border.width : 5
         border.color : "lightgrey"
         Text {
@@ -89,10 +95,10 @@ Window {
     }
 
     Rectangle {
-        width: 100
-        height: 100
-        y: 125 + 2*150 - width/2
-        x: 1100 + width/2
+        width: box
+        height: box
+        y: widthmin + 2*distance - width/2
+        x: borderWidth + width/2
         border.width : 5
         border.color : "lightgrey"
         Text {
@@ -110,7 +116,7 @@ Window {
         model: 3
 
         Rectangle {
-            y: 125 + index *150
+            y: widthmin + index *distance
             x: 25
             height: 4
             width: borderWidth
@@ -214,9 +220,9 @@ Window {
             color: Qt.rgba(Math.random(), 0, 0, 1)
             //color: "lightgrey"
 
-            x: index*(beadWidth+tolstatic) + 36
-            //x: borderWidth - 36 - index*(beadWidth+tolstatic)
-            y: 100
+            x: index*(beadWidth+tolstatic) + constfix
+            //x: borderWidth - constfix - index*(beadWidth+tolstatic)
+            y: widthmin - beadHeight/2
 
             property int offsetX:0
             property int offsetY:0
@@ -249,7 +255,7 @@ Window {
             Drag.active: mouseArea.drag.active
             Text {
                 anchors.centerIn: parent
-                text: index
+                //text: index
                 color: "white"
             }
 
@@ -323,21 +329,21 @@ Window {
 
                     //***** Max and Min Limitations on bead movements
                     if (index == 0){
-                        drag.minimumX = 36;
+                        drag.minimumX = constfix;
                         drag.maximumX = rectN.x - (beadWidth+toldynamic);
                         console.log("bead 0 - dragmin - dragmax", drag.minimumX, drag.maximumX);
                         if (rectC.x === rectN.x - (beadWidth+tolstatic)){
-                            drag.maximumX = borderWidth - (beadWidth/2 +6) - (9 - index)*(beadWidth + toldynamic)
+                            drag.maximumX = borderWidth - (beadWidth/2 +constmax) - (9 - index)*(beadWidth + toldynamic)
                             console.log("bead 0 - all beads - dragmin - dragmax", drag.minimumX, drag.maximumX);
                             groupbead = true
                         }
                     }
                     else if (index == totalBeadList.length -1){
                         drag.minimumX = rectB.x + (beadWidth+toldynamic);
-                        drag.maximumX = borderWidth - (beadWidth/2 + 6);
+                        drag.maximumX = borderWidth - (beadWidth/2 + constmax) ;
                         console.log("bead 9 - dragmin - dragmax", drag.minimumX, drag.maximumX);
                         if (rectC.x === rectB.x + (beadWidth+tolstatic)){
-                            drag.minimumX = 36 +  (index)*(beadWidth + toldynamic)
+                            drag.minimumX = constfix +  (index)*(beadWidth + toldynamic)
                             console.log("bead 9 - all beads - dragmin - dragmax", drag.minimumX, drag.maximumX);
                             groupbead = true
                         }
@@ -346,11 +352,11 @@ Window {
                         drag.maximumX = rectN.x - (beadWidth+toldynamic);
                         console.log("bead middle - dragmin - dragmax", drag.minimumX, drag.maximumX);
                         if (rectC.x === rectN.x - (beadWidth+tolstatic)){
-                            drag.maximumX = borderWidth - (beadWidth/2 +6) - (9 - index)*(beadWidth + toldynamic)
+                            drag.maximumX = borderWidth - (beadWidth/2 +constmax) - (9 - index)*(beadWidth + toldynamic)
                             console.log("middle right - dragmin - dragmax", drag.minimumX, drag.maximumX);
                         }
                         if (rectC.x === rectB.x + (beadWidth+tolstatic)){
-                            drag.minimumX = 36 +  (index)*(beadWidth + toldynamic)
+                            drag.minimumX = constfix +  (index)*(beadWidth + toldynamic)
                             console.log("middle left - dragmin - dragmax", drag.minimumX, drag.maximumX);
                         }
                     }
@@ -362,7 +368,7 @@ Window {
                             rect.disableDrag()
                             pressedRect.enableDrag()
                             drag.minimumX = rectB.x + (beadWidth+toldynamic);
-                            drag.maximumX = borderWidth - (beadWidth/2 + 6);
+                            drag.maximumX = borderWidth - (beadWidth/2 + constmax);
                             console.log("Condition - last bead", drag.maximumX);
                             lonelybead = true
                         }
@@ -374,7 +380,7 @@ Window {
                             var rect = iRepeater.itemAt(index);
                             rect.disableDrag()
                             pressedRect.enableDrag()
-                            drag.minimumX = 36;
+                            drag.minimumX = constfix;
                             drag.maximumX = rectN.x - (beadWidth+tolstatic);
                             console.log("dragmax - first bead", drag.maximumX);
                             lonelybead = true
@@ -460,7 +466,7 @@ Window {
                                             rect.offsetX = rect.x - pressedRect.x
                                             rect.offsetY = rect.y - pressedRect.y
                                             rect.setRelative(pressedRect)
-                                            drag.minimumX = 36 +  (index - savei)*(beadWidth+toldynamic)
+                                            drag.minimumX = constfix +  (index - savei)*(beadWidth+toldynamic)
 
                                         }
                                         console.log("dragmax - move left - added bead", drag.minimumX);
@@ -532,7 +538,7 @@ Window {
                                             rect.offsetX = rect.x - pressedRect.x
                                             rect.offsetY = rect.y - pressedRect.y
                                             rect.setRelative(pressedRect)
-                                            drag.maximumX = borderWidth - (beadWidth/2 + 6 ) - (savei - index)*(beadWidth+toldynamic)
+                                            drag.maximumX = borderWidth - (beadWidth/2 + constmax ) - (savei - index)*(beadWidth+toldynamic)
                                         }
                                         console.log("dragmax - added bead", drag.maximumX);
                                         console.log("Savei", savei);
@@ -625,8 +631,8 @@ Window {
 
                     // ***** Count the rows
                     for (var c=0; c<iRepeater.count; c++){
-                        if (iRepeater.itemAt(c).x < ((c+3) * (beadWidth + tolstatic) + 36)){
-                            //console.log("((c+1) * beadwidth + 36)", c, iRepeater.itemAt(c).x, ((c+3) * (beadWidth + tolstatic) + 36));
+                        if (iRepeater.itemAt(c).x < ((c+3) * (beadWidth + tolstatic) + constfix)){
+                            //console.log("((c+1) * beadwidth + constfix)", c, iRepeater.itemAt(c).x, ((c+3) * (beadWidth + tolstatic) + constfix));
                             helpcounter = helpcounter + 1
                         }
                     }
@@ -672,8 +678,8 @@ Window {
             color: Qt.rgba(0, 0, Math.random(), 1)
             //color: "grey"
 
-            x: index*(beadWidth+tolstatic) + 36
-            y: 250
+            x: index*(beadWidth+tolstatic) + constfix
+            y: widthmin+distance-beadHeight/2
 
             property int offsetX:0
             property int offsetY:0
@@ -707,7 +713,7 @@ Window {
             Drag.active: mouseArea2.drag.active
             Text {
                 anchors.centerIn: parent
-                text: index
+                //text: index
                 color: "white"
             }
 
@@ -781,21 +787,21 @@ Window {
 
                     //***** Max and Min Limitations on bed movements
                     if (index == 0){
-                        drag.minimumX = 36;
+                        drag.minimumX = constfix;
                         drag.maximumX = rectN.x - (beadWidth+toldynamic);
                         console.log("bead 0 - dragmax - dragmin", drag.minimumX, drag.maximumX);
                         if (rectC.x === rectN.x - (beadWidth+tolstatic)){
-                            drag.maximumX = borderWidth - (beadWidth/2 +6) - (9 - index)*(beadWidth + toldynamic)
+                            drag.maximumX = borderWidth - (beadWidth/2 +constmax) - (9 - index)*(beadWidth + toldynamic)
                             console.log("bead 0 - all beads - dragmin - dragmax", drag.minimumX, drag.maximumX);
                             groupbead = true
                         }
                     }
                     else if (index == totalBeadList.length -1){
                         drag.minimumX = rectB.x + (beadWidth+toldynamic);
-                        drag.maximumX = borderWidth - (beadWidth/2 + 6);
+                        drag.maximumX = borderWidth - (beadWidth/2 + constmax);
                         console.log("bead 9 - dragmax - dragmin", drag.minimumX, drag.maximumX);
                         if (rectC.x === rectB.x + (beadWidth+tolstatic)){
-                            drag.minimumX = 36 +  (index)*(beadWidth + toldynamic)
+                            drag.minimumX = constfix +  (index)*(beadWidth + toldynamic)
                             console.log("bead 9 - all beads - dragmin - dragmax", drag.minimumX, drag.maximumX);
                             groupbead = true
                         }
@@ -804,11 +810,11 @@ Window {
                         drag.maximumX = rectN.x - (beadWidth+toldynamic);
                         console.log("bead middle - dragmax - dragmin", drag.minimumX, drag.maximumX);
                         if (rectC.x === rectN.x - (beadWidth+tolstatic)){
-                            drag.maximumX = borderWidth - (beadWidth/2 +6) - (9 - index)*(beadWidth + toldynamic)
+                            drag.maximumX = borderWidth - (beadWidth/2 +constmax) - (9 - index)*(beadWidth + toldynamic)
                             console.log("middle right - dragmax - dragmin", drag.minimumX, drag.maximumX);
                         }
                         if (rectC.x === rectB.x + (beadWidth+tolstatic)){
-                            drag.minimumX = 36 +  (index)*(beadWidth + toldynamic)
+                            drag.minimumX = constfix +  (index)*(beadWidth + toldynamic)
                             console.log("middle left - dragmax - dragmin", drag.minimumX, drag.maximumX);
 
                         }
@@ -821,7 +827,7 @@ Window {
                             rect.disableDrag()
                             pressedRect.enableDrag()
                             drag.minimumX = rectB.x + (beadWidth+toldynamic);
-                            drag.maximumX = borderWidth - (beadWidth/2 + 6);
+                            drag.maximumX = borderWidth - (beadWidth/2 + constmax);
                             console.log("Condition - last bead", drag.maximumX);
                             lonelybead = true
                         }
@@ -833,7 +839,7 @@ Window {
                             var rect = iRepeater2.itemAt(index);
                             rect.disableDrag()
                             pressedRect.enableDrag()
-                            drag.minimumX = 36;
+                            drag.minimumX = constfix;
                             drag.maximumX = rectN.x - (beadWidth+tolstatic);
                             console.log("dragmax - first bead", drag.maximumX);
                             lonelybead = true
@@ -919,7 +925,7 @@ Window {
                                             rect.offsetX = rect.x - pressedRect.x
                                             rect.offsetY = rect.y - pressedRect.y
                                             rect.setRelative(pressedRect)
-                                            drag.minimumX = 36 +  (index - savei)*(beadWidth+toldynamic)
+                                            drag.minimumX = constfix +  (index - savei)*(beadWidth+toldynamic)
 
                                         }
                                         console.log("dragmax - move left - added bead", drag.minimumX);
@@ -991,7 +997,7 @@ Window {
                                             rect.offsetX = rect.x - pressedRect.x
                                             rect.offsetY = rect.y - pressedRect.y
                                             rect.setRelative(pressedRect)
-                                            drag.maximumX = borderWidth - (beadWidth/2 + 6 ) - (savei - index)*(beadWidth+toldynamic)
+                                            drag.maximumX = borderWidth - (beadWidth/2 + constmax ) - (savei - index)*(beadWidth+toldynamic)
                                         }
                                         console.log("dragmax - added bead", drag.maximumX);
                                         console.log("Savei", savei);
@@ -1085,8 +1091,8 @@ Window {
 
                     // ***** Count the rows
                     for (var c=0; c<iRepeater2.count; c++){
-                        if (iRepeater2.itemAt(c).x < ((c+3) * (beadWidth + tolstatic) + 36)){
-                            //console.log("((c+1) * beadwidth + 36)", c, iRepeater2.itemAt(c).x, ((c+3) * (beadWidth + tolstatic) + 36));
+                        if (iRepeater2.itemAt(c).x < ((c+3) * (beadWidth + tolstatic) + constfix)){
+                            //console.log("((c+1) * beadwidth + constfix)", c, iRepeater2.itemAt(c).x, ((c+3) * (beadWidth + tolstatic) + constfix));
                             helpcounter = helpcounter + 1
                         }
                     }// ##### for counter
@@ -1130,8 +1136,8 @@ Window {
             color: Qt.rgba(0, Math.random(), 0, 1)
             //color: "black"
 
-            x: index*(beadWidth+tolstatic) + 36
-            y: 400
+            x: index*(beadWidth+tolstatic) + constfix
+            y: widthmin+distance*2 - beadHeight/2
 
             property int offsetX:0
             property int offsetY:0
@@ -1164,7 +1170,7 @@ Window {
             Drag.active: mouseArea3.drag.active
             Text {
                 anchors.centerIn: parent
-                text: index
+                //text: index
                 color: "white"
             }
 
@@ -1238,21 +1244,21 @@ Window {
 
                     //***** Max and Min Limitations on bed movements
                     if (index == 0){
-                        drag.minimumX = 36;
+                        drag.minimumX = constfix;
                         drag.maximumX = rectN.x - (beadWidth+toldynamic);
                         console.log("bead 0 - dragmax - dragmin", drag.minimumX, drag.maximumX);
                         if (rectC.x === rectN.x - (beadWidth+tolstatic)){
-                            drag.maximumX = borderWidth - (beadWidth/2 +6) - (9 - index)*(beadWidth + toldynamic)
+                            drag.maximumX = borderWidth - (beadWidth/2 +constmax) - (9 - index)*(beadWidth + toldynamic)
                             console.log("bead 0 - all beads - dragmin - dragmax", drag.minimumX, drag.maximumX);
                             groupbead = true
                         }
                     }
                     else if (index == totalBeadList.length -1){
                         drag.minimumX = rectB.x + (beadWidth+toldynamic);
-                        drag.maximumX = borderWidth - (beadWidth/2 + 6);
+                        drag.maximumX = borderWidth - (beadWidth/2 + constmax);
                         console.log("bead 9 - dragmax - dragmin", drag.minimumX, drag.maximumX);
                         if (rectC.x === rectB.x + (beadWidth+tolstatic)){
-                            drag.minimumX = 36 +  (index)*(beadWidth + toldynamic)
+                            drag.minimumX = constfix +  (index)*(beadWidth + toldynamic)
                             console.log("bead 9 - all beads - dragmin - dragmax", drag.minimumX, drag.maximumX);
                             groupbead = true
                         }
@@ -1261,11 +1267,11 @@ Window {
                         drag.maximumX = rectN.x - (beadWidth+toldynamic);
                         console.log("bead middle - dragmax - dragmin", drag.minimumX, drag.maximumX);
                         if (rectC.x === rectN.x - (beadWidth+tolstatic)){
-                            drag.maximumX = borderWidth - (beadWidth/2 +6) - (9 - index)*(beadWidth + toldynamic)
+                            drag.maximumX = borderWidth - (beadWidth/2 +constmax) - (9 - index)*(beadWidth + toldynamic)
                             console.log("middle right - dragmax - dragmin", drag.minimumX, drag.maximumX);
                         }
                         if (rectC.x === rectB.x + (beadWidth+tolstatic)){
-                            drag.minimumX = 36 +  (index)*(beadWidth + toldynamic)
+                            drag.minimumX = constfix +  (index)*(beadWidth + toldynamic)
                             console.log("middle left - dragmax - dragmin", drag.minimumX, drag.maximumX);
 
                         }
@@ -1278,7 +1284,7 @@ Window {
                             rect.disableDrag()
                             pressedRect.enableDrag()
                             drag.minimumX = rectB.x + (beadWidth+toldynamic);
-                            drag.maximumX = borderWidth - (beadWidth/2 + 6);
+                            drag.maximumX = borderWidth - (beadWidth/2 + constmax);
                             console.log("Condition - last bead", drag.maximumX);
                             lonelybead = true
                         }
@@ -1290,7 +1296,7 @@ Window {
                             var rect = iRepeater3.itemAt(index);
                             rect.disableDrag()
                             pressedRect.enableDrag()
-                            drag.minimumX = 36;
+                            drag.minimumX = constfix;
                             drag.maximumX = rectN.x - (beadWidth+tolstatic);
                             console.log("dragmax - first bead", drag.maximumX);
                             lonelybead = true
@@ -1376,7 +1382,7 @@ Window {
                                             rect.offsetX = rect.x - pressedRect.x
                                             rect.offsetY = rect.y - pressedRect.y
                                             rect.setRelative(pressedRect)
-                                            drag.minimumX = 36 +  (index - savei)*(beadWidth+toldynamic)
+                                            drag.minimumX = constfix +  (index - savei)*(beadWidth+toldynamic)
 
                                         }
                                         console.log("dragmax - move left - added bead", drag.minimumX);
@@ -1448,7 +1454,7 @@ Window {
                                             rect.offsetX = rect.x - pressedRect.x
                                             rect.offsetY = rect.y - pressedRect.y
                                             rect.setRelative(pressedRect)
-                                            drag.maximumX = borderWidth - (beadWidth/2 + 6 ) - (savei - index)*(beadWidth+toldynamic)
+                                            drag.maximumX = borderWidth - (beadWidth/2 + constmax ) - (savei - index)*(beadWidth+toldynamic)
                                         }
                                         console.log("dragmax - added bead", drag.maximumX);
                                         console.log("Savei", savei);
@@ -1540,8 +1546,8 @@ Window {
 
                     // ***** Count the rows
                     for (var c=0; c<iRepeater3.count; c++){
-                        if (iRepeater3.itemAt(c).x < ((c+3) * (beadWidth + tolstatic) + 36)){
-                            console.log("((c+1) * beadwidth + 36)", c, iRepeater3.itemAt(c).x, ((c+3) * (beadWidth + tolstatic) + 36));
+                        if (iRepeater3.itemAt(c).x < ((c+3) * (beadWidth + tolstatic) + constfix)){
+                            console.log("((c+1) * beadwidth + constfix)", c, iRepeater3.itemAt(c).x, ((c+3) * (beadWidth + tolstatic) + constfix));
                             helpcounter = helpcounter + 1
                         }
                     } // ##### for counter
