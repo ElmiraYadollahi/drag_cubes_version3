@@ -4,6 +4,9 @@ import QtQuick.Controls 1.2
 import QtQuick.Window 2.2
 //import QtQuick.Controls 1.4
 
+import Ros 1.0
+
+
 Window {
     id: win
     width: 1800
@@ -272,29 +275,43 @@ Window {
             }
 
             function tracking(tracked, moved, xDist){
-                Qt.binding(
-                            function()
-                            {
-
+                Qt.binding(function(){
                                 moved.x += tracked.x + xDist
-
-
                                 return moved.x;
                             }
-                            )
+                )
             }
+
+            RosSignal {
+                id:row1_right
+                topic: "abacus/signals/row1/right"
+            }
+            RosSignal {
+                id:row1_left
+                topic: "abacus/signals/row1/left"
+            }
+            RosStringPublisher {
+                id: row1_xChangePublisher
+                topic: "abacus/row1/xchange"
+            }
+
             onXChanged: {
                 if (mouseArea.drag.active) {
                     xDiff = x-oldX
+                    row1_xChangePublisher.text = ""+xDiff
                     if (xDiff > 0) {
                         rightDirection = true
                         leftDirection = false
                         console.log("right");
+                        row1_right.signal()
+
                     }
                     if (xDiff < 0) {
                         leftDirection = true
                         rightDirection = false
                         console.log("left");
+                        row1_left.signal()
+
                     }
 
 

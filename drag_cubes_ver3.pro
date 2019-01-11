@@ -1,6 +1,8 @@
 TEMPLATE = app
 
 QT += qml quick widgets
+CONFIG += c++11  link_pkgconfig
+PKGCONFIG += roscpp
 
 SOURCES += main.cpp
 
