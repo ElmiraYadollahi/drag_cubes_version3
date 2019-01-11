@@ -6,7 +6,7 @@ Requirements
 
 - `qt5`
 - ROS (tested with ROS melodic)
-- ros-qml-plugin from [https://github.com/severin-lemaignan/ros-qml-plugin|https://github.com/severin-lemaignan/ros-qml-plugin]
+- ros-qml-plugin from [https://github.com/severin-lemaignan/ros-qml-plugin]
 
 Installation
 ------------
